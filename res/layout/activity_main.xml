@@ -9,8 +9,38 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/SrchDevButt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="27dp"
+        android:onClick="searchDevClick"
+        android:text="Get Device" />
+
+     <ListView
+         android:id="@+id/listView1"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@+id/SrchDevButt"
+         android:visibility="visible" >
+
+     </ListView>
+
+     <Button
+         android:id="@+id/sendControl"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/listView1"
+         android:layout_marginLeft="22dp"
+         android:layout_toRightOf="@+id/SrchDevButt"
+         android:onClick="getControlDev"
+         android:text="Send 128" />
 
 </RelativeLayout>
