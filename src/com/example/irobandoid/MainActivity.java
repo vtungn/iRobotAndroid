@@ -1,7 +1,10 @@
 package com.example.irobandoid;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -12,17 +15,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.bluetooth.*;
 import android.content.Intent;
+
 public class MainActivity extends Activity {
 	
-	private static final String TAG = "bluetooth2";
+	private static final String TAG = "TungBT";
 	
-	private BluetoothAdapter btAdapter;
-	private BluetoothDevice pairedDevices;
+	private BluetoothAdapter btAdapter = null;
+	private BluetoothSocket btSocket = null;
+	private Set<BluetoothDevice> pairedDevices;
 	private ListView lv;
+	private OutputStream outStream = null;
 	
 	// SPP UUID service
-	//private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	
+	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	// MAC address of FireFly
+	private static String address = "00:06:66:0A:AB:27";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +39,10 @@ public class MainActivity extends Activity {
 		
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 		
-		
-	    
-	    Set<BluetoothDevice> setbtDev;
-	    setbtDev = btAdapter.getBondedDevices();
-	    for(BluetoothDevice bt : setbtDev)
-	         pairedDevices = bt;
+		pairedDevices = btAdapter.getBondedDevices();
+	      
 
-	    
+		Log.e(TAG, "+++DONE CREATE +++");
 	}
 
 	@Override
@@ -49,6 +52,41 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	
+	@Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "+ ON RESUME +");
+        BluetoothDevice device = btAdapter.getRemoteDevice(address);
+        try {
+            btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+        } catch (IOException e) {
+        	Log.e(TAG, "ON RESUME: Socket creation failed.", e);
+        }
+        //blocking connect
+        btAdapter.cancelDiscovery();
+        
+        Log.d(TAG, "+ ON RESUME : connect socket +");
+        try {
+            btSocket.connect();
+            Log.e(TAG, "ON RESUME: BT connection established, data transfer link open.");
+        } catch (IOException e) {
+        	try {
+        		btSocket.close();
+        	} catch (IOException e2) {
+        		Log.e(TAG, "ON RESUME: Unable to close socket during connection failure", e2);
+        	}
+        }
+        
+        //say something to server
+        Log.d(TAG, "+ DONE RESUME ready to say sth +");
+        try {
+            outStream = btSocket.getOutputStream();
+        } catch (IOException e) {
+            Log.e(TAG, "ON SEND MSG: Output stream creation failed.", e);
+        }
+	}
+        
 
 	public void searchDevClick(View v)
 	{
@@ -66,25 +104,81 @@ public class MainActivity extends Activity {
 	    	  Toast.makeText(getApplicationContext(),"Show Paired Devices",
 	    		         Toast.LENGTH_SHORT).show();
 	         ArrayList list = new ArrayList();
-	         //TextView textView = (TextView)findViewById(R.id.textView2);
 	         
+	         for(BluetoothDevice bt : pairedDevices)
+	        	 list.add(bt.getName());
 	         	//textView.setText(bt.getName());
-	         list.add(pairedDevices.getName());
-	            //Log.v(bt.getName()+ "", null);
-
+//	         if(pairedDevices != null)
+//	        	 list.add(pairedDevices.getName());
+//	         else
+//	        	 Toast.makeText(getApplicationContext(),"NO Paired Devices",
+//	    		         Toast.LENGTH_SHORT).show();
 	         final ArrayAdapter adapter = new ArrayAdapter
 	         	(this,android.R.layout.simple_list_item_1, list);
 	         lv.setAdapter(adapter);
 	         
-	         v.setEnabled(false);
+	         //v.setEnabled(false);
 	      }
 	}
-	public void getControlDev(View v)
+	public void sendCommandtoiRobot(char msg){
+		try {
+            outStream.write(msg);
+        } catch (IOException e) {
+            Log.e(TAG, "ON SEND MSGE: Exception during write.", e);
+        }
+	}
+	public void getControlDev(View v) throws IOException
 	{
 		Toast.makeText(getApplicationContext(),"Beep",
 		         Toast.LENGTH_SHORT).show();
 		Log.d(TAG, "...Data to send: " + "128" + "...");
+		
+		Log.d(TAG, "+ send msg +");
+        
+        
+//        String message = "abc";
+        char charmsg = 128;
+        
+//        byte[] msgBuffer = message.getBytes();
+//        byte byteMSG = (byte)-128;
+//        int intMSG = 128;
+//        byte byteint = (byte) intMSG;
+//        Log.d(TAG, "byte:"+ byteMSG + ",int:"+intMSG +",my mess:"+ msgBuffer);
+        sendCommandtoiRobot(charmsg);
+        charmsg = 132;
+        sendCommandtoiRobot(charmsg);
+        
+		
 	}
-	
-
+	public void CtrlRight(View v) throws IOException
+	{	
+		char msg = 137;
+		sendCommandtoiRobot(msg);
+		msg = 0;
+		sendCommandtoiRobot(msg);
+		msg = 200;
+		sendCommandtoiRobot(msg);
+	}
+	public void CtrlUP(View v) throws IOException
+	{	
+		char msg = 137;
+		sendCommandtoiRobot(msg);
+		msg = 200;
+		sendCommandtoiRobot(msg);
+		msg = 200;
+		sendCommandtoiRobot(msg);
+	}
+	public void CtrlLeft(View v) throws IOException
+	{	
+		
+	}
+	public void CtrlDown(View v) throws IOException
+	{	
+		char msg = 137;
+		sendCommandtoiRobot(msg);
+		msg = 200;
+		sendCommandtoiRobot(msg);
+		msg = 0;
+		sendCommandtoiRobot(msg);
+	}
 }
