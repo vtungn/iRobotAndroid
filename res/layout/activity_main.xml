@@ -14,25 +14,6 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
-    <Button
-        android:id="@+id/SrchDevButt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="27dp"
-        android:onClick="searchDevClick"
-        android:text="Get Device" />
-
-     <Button
-         android:id="@+id/sendControl"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_above="@+id/listView1"
-         android:layout_marginLeft="22dp"
-         android:layout_toRightOf="@+id/SrchDevButt"
-         android:onClick="getControlDev"
-         android:text="Send 128" />
-
      <ListView
          android:id="@+id/listView1"
          android:layout_width="wrap_content"
@@ -65,15 +46,6 @@
          android:text="Left" />
 
      <Button
-         android:id="@+id/btnRight"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignParentRight="true"
-         android:layout_below="@+id/btnUP"
-         android:onClick="CtrlRight"
-         android:text="Right" />
-
-     <Button
          android:id="@+id/btnUP"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -82,5 +54,44 @@
          android:layout_marginBottom="20dp"
          android:onClick="CtrlUP"
          android:text="up" />
+
+     <Button
+         android:id="@+id/SrchDevButt"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@+id/textView2"
+         android:layout_marginTop="32dp"
+         android:onClick="searchDevClick"
+         android:text="Get Device" />
+
+     <Button
+         android:id="@+id/sendControl"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/listView1"
+         android:layout_toRightOf="@+id/SrchDevButt"
+         android:onClick="getControlDev"
+         android:text="Send 128" />
+
+     <Button
+         android:id="@+id/btnRight"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/btnUP"
+         android:layout_toRightOf="@+id/btnDown"
+         android:onClick="CtrlRight"
+         android:text="Right" />
+
+     <Button
+         android:id="@+id/refrshButt"
+         style="?android:attr/buttonStyleSmall"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/sendControl"
+         android:layout_alignBottom="@+id/sendControl"
+         android:layout_toRightOf="@+id/sendControl"
+         android:onClick="ReconnectClick"
+         android:text="Reconnect" />
 
 </RelativeLayout>

@@ -38,9 +38,20 @@ public class MainActivity extends Activity {
 		lv = (ListView)findViewById(R.id.listView1);
 		
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
+//		if (!btAdapter.isEnabled()) {
+//	         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//	         startActivityForResult(turnOn, 0);
+//	         Toast.makeText(getApplicationContext(),"Turned on" 
+//	         ,Toast.LENGTH_LONG).show();
+//	      }
+//	      else{
+//	         Toast.makeText(getApplicationContext(),"Bluetooth on",
+//	         Toast.LENGTH_LONG).show();
+//	         }
 		
 		pairedDevices = btAdapter.getBondedDevices();
-	      
+	    
+		
 
 		Log.e(TAG, "+++DONE CREATE +++");
 	}
@@ -127,6 +138,46 @@ public class MainActivity extends Activity {
             Log.e(TAG, "ON SEND MSGE: Exception during write.", e);
         }
 	}
+	public void drive(char velocity, char rotatespeed) {
+		sendCommandtoiRobot((char)137);
+		sendCommandtoiRobot(toHighBytes(velocity));
+		sendCommandtoiRobot(toLowBytes(velocity));
+		sendCommandtoiRobot(toHighBytes(rotatespeed));
+		sendCommandtoiRobot(toLowBytes(rotatespeed)); 
+	}
+	
+	char toHighBytes(char value ){
+//	    """ returns two bytes (ints) in high, low order
+//	    whose bits form the input value when interpreted in
+//	    two's complement
+//	    """
+		char eqBitVal;
+//	    # if positive or zero, it's OK
+	    if (value >= 0)
+	        eqBitVal = value;
+//	    # if it's negative, I think it is this
+	    else
+	        eqBitVal = (char) ((1<<16) + value);
+	    char charreturn = (char)( (eqBitVal >> 8) & 0xFF );
+	    return charreturn;
+	}
+	char toLowBytes(char value ){
+//	    """ returns two bytes (ints) in high, low order
+//	    whose bits form the input value when interpreted in
+//	    two's complement
+//	    """
+		char eqBitVal;
+//	    # if positive or zero, it's OK
+	    if (value >= 0)
+	        eqBitVal = value;
+//	    # if it's negative, I think it is this
+	    else
+	        eqBitVal = (char) ((1<<16) + value);
+		char charreturn = (char)( eqBitVal & 0xFF  );
+	    return charreturn;
+	    //return ( (eqBitVal >> 8) & 0xFF, eqBitVal & 0xFF )
+	}
+	
 	public void getControlDev(View v) throws IOException
 	{
 		Toast.makeText(getApplicationContext(),"Beep",
@@ -152,33 +203,29 @@ public class MainActivity extends Activity {
 	}
 	public void CtrlRight(View v) throws IOException
 	{	
-		char msg = 137;
-		sendCommandtoiRobot(msg);
-		msg = 0;
-		sendCommandtoiRobot(msg);
-		msg = 200;
-		sendCommandtoiRobot(msg);
+		drive((char) 90,(char) -1);
+		Toast.makeText(getApplicationContext(),"CtrlRight",
+		         Toast.LENGTH_SHORT).show();
 	}
 	public void CtrlUP(View v) throws IOException
 	{	
-		char msg = 137;
-		sendCommandtoiRobot(msg);
-		msg = 200;
-		sendCommandtoiRobot(msg);
-		msg = 200;
-		sendCommandtoiRobot(msg);
+		drive((char) 200,(char) 32767);
+		Toast.makeText(getApplicationContext(),"CtrlUP",
+		         Toast.LENGTH_SHORT).show();
 	}
 	public void CtrlLeft(View v) throws IOException
 	{	
-		
+		drive((char) 90,(char) 1);
+		Toast.makeText(getApplicationContext(),"CtrlLeft",
+		         Toast.LENGTH_SHORT).show();
 	}
 	public void CtrlDown(View v) throws IOException
 	{	
-		char msg = 137;
-		sendCommandtoiRobot(msg);
-		msg = 200;
-		sendCommandtoiRobot(msg);
-		msg = 0;
-		sendCommandtoiRobot(msg);
+		drive((char) -90,(char) 32767);
+		Toast.makeText(getApplicationContext(),"CtrlDown",
+		         Toast.LENGTH_SHORT).show();
+	}
+	public void ReconnectClick(View v) throws IOException {
+		onResume();
 	}
 }
