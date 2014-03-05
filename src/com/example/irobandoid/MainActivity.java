@@ -225,7 +225,19 @@ public class MainActivity extends Activity {
 		Toast.makeText(getApplicationContext(),"CtrlDown",
 		         Toast.LENGTH_SHORT).show();
 	}
+	public void CtrlUp2X(View v) throws IOException
+	{	
+		drive((char) 500,(char) 32767);
+		
+	}
 	public void ReconnectClick(View v) throws IOException {
 		onResume();
+		sendCommandtoiRobot((char)128);
+		sendCommandtoiRobot((char)132);
+	}
+	public void CtrlStop(View v) throws IOException
+	{	
+		drive((char) 0,(char) 32767);
+		
 	}
 }

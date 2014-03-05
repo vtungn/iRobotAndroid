@@ -8,12 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
      <ListView
          android:id="@+id/listView1"
          android:layout_width="wrap_content"
@@ -27,25 +21,6 @@
      </ListView>
 
      <Button
-         android:id="@+id/btnDown"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/btnUP"
-         android:layout_alignParentBottom="true"
-         android:layout_marginBottom="141dp"
-         android:onClick="CtrlDown"
-         android:text="Down" />
-
-     <Button
-         android:id="@+id/btnLeft"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/listView1"
-         android:layout_toLeftOf="@+id/btnDown"
-         android:onClick="CtrlLeft"
-         android:text="Left" />
-
-     <Button
          android:id="@+id/btnUP"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -54,25 +29,6 @@
          android:layout_marginBottom="20dp"
          android:onClick="CtrlUP"
          android:text="up" />
-
-     <Button
-         android:id="@+id/SrchDevButt"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignParentLeft="true"
-         android:layout_below="@+id/textView2"
-         android:layout_marginTop="32dp"
-         android:onClick="searchDevClick"
-         android:text="Get Device" />
-
-     <Button
-         android:id="@+id/sendControl"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_above="@+id/listView1"
-         android:layout_toRightOf="@+id/SrchDevButt"
-         android:onClick="getControlDev"
-         android:text="Send 128" />
 
      <Button
          android:id="@+id/btnRight"
@@ -84,14 +40,71 @@
          android:text="Right" />
 
      <Button
+         android:id="@+id/SrchDevButt"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="28dp"
+         android:onClick="searchDevClick"
+         android:text="Get Device" />
+
+     <Button
+         android:id="@+id/sendControl"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/listView1"
+         android:layout_toRightOf="@+id/SrchDevButt"
+         android:onClick="getControlDev"
+         android:text="Connect" />
+
+     <Button
          android:id="@+id/refrshButt"
          style="?android:attr/buttonStyleSmall"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/sendControl"
-         android:layout_alignBottom="@+id/sendControl"
+         android:layout_above="@+id/listView1"
+         android:layout_alignParentRight="true"
          android:layout_toRightOf="@+id/sendControl"
          android:onClick="ReconnectClick"
          android:text="Reconnect" />
+
+     <Button
+         android:id="@+id/btnLeft"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/btnDown"
+         android:layout_alignBottom="@+id/btnDown"
+         android:layout_alignRight="@+id/listView1"
+         android:onClick="CtrlLeft"
+         android:text="Left" />
+
+     <Button
+         android:id="@+id/btnStop"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_alignRight="@+id/btnDown"
+         android:layout_marginBottom="84dp"
+         android:onClick="CtrlStop"
+         android:text="Stop" />
+
+     <Button
+         android:id="@+id/btnDown"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/btnStop"
+         android:layout_alignLeft="@+id/btnUP"
+         android:layout_marginBottom="20dp"
+         android:onClick="CtrlDown"
+         android:text="Down" />
+
+     <Button
+         android:id="@+id/btnUp2x"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignTop="@+id/listView1"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="18dp"
+         android:onClick="CtrlUp2X"
+         android:text="Up full speed" />
 
 </RelativeLayout>
