@@ -1,6 +1,7 @@
 package com.example.irobandoid;
 
 import java.io.IOException;
+import android.view.ViewGroup;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
@@ -15,7 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.bluetooth.*;
 import android.content.Intent;
-
+import android.transition.*;
 public class MainActivity extends Activity {
 	
 	private static final String TAG = "TungBT";
@@ -30,14 +31,20 @@ public class MainActivity extends Activity {
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	// MAC address of FireFly
 	private static String address = "00:06:66:0A:AB:27";
-	
+	Scene sceneConnecttoPC;
+	ViewGroup rootView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.rootlayout);
 		lv = (ListView)findViewById(R.id.listView1);
-		
+//		rootView = (ViewGroup) findViewById(R.id.rootLayout);
+//		sceneConnecttoPC = Scene.getSceneForLayout(rootView ,R.layout.connectpc, this);
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
+		if(!btAdapter.isEnabled()){
+			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(turnOn, 0);
+		}
 //		if (!btAdapter.isEnabled()) {
 //	         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 //	         startActivityForResult(turnOn, 0);
@@ -49,7 +56,7 @@ public class MainActivity extends Activity {
 //	         Toast.LENGTH_LONG).show();
 //	         }
 		
-		pairedDevices = btAdapter.getBondedDevices();
+		
 	    
 		
 
@@ -68,7 +75,10 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "+ ON RESUME +");
-        BluetoothDevice device = btAdapter.getRemoteDevice(address);
+        
+	}
+    public void setupbluetoothConnect() {
+    	BluetoothDevice device = btAdapter.getRemoteDevice(address);
         try {
             btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
         } catch (IOException e) {
@@ -96,8 +106,7 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             Log.e(TAG, "ON SEND MSG: Output stream creation failed.", e);
         }
-	}
-        
+    }
 
 	public void searchDevClick(View v)
 	{
@@ -225,11 +234,7 @@ public class MainActivity extends Activity {
 		Toast.makeText(getApplicationContext(),"CtrlDown",
 		         Toast.LENGTH_SHORT).show();
 	}
-	public void CtrlUp2X(View v) throws IOException
-	{	
-		drive((char) 500,(char) 32767);
-		
-	}
+	
 	public void ReconnectClick(View v) throws IOException {
 		onResume();
 		sendCommandtoiRobot((char)128);
@@ -240,4 +245,17 @@ public class MainActivity extends Activity {
 		drive((char) 0,(char) 32767);
 		
 	}
+	public void CtrliRobot(View v)
+	{	
+		setContentView(R.layout.irobotconfigure);
+		pairedDevices = btAdapter.getBondedDevices();
+		setupbluetoothConnect();
+		Log.e(TAG, "+++DONE getBT for robot");
+	}
+	public void CtrlConnectPC(View v)
+	{	
+		setContentView(R.layout.connectpc);
+		
+	}
+	
 }

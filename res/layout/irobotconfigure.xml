@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+     <ListView
+         android:id="@+id/listView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/btnDown"
+         android:layout_alignLeft="@+id/SrchDevButt"
+         android:layout_below="@+id/SrchDevButt"
+         android:layout_toLeftOf="@+id/sendControl"
+         android:visibility="visible" >
+
+     </ListView>
+
+     <Button
+         android:id="@+id/btnUP"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/listView1"
+         android:layout_alignLeft="@+id/sendControl"
+         android:layout_marginBottom="20dp"
+         android:onClick="CtrlUP"
+         android:text="@string/up" />
+
+     <Button
+         android:id="@+id/btnRight"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/btnUP"
+         android:layout_toRightOf="@+id/btnDown"
+         android:onClick="CtrlRight"
+         android:text="Right" />
+
+     <Button
+         android:id="@+id/SrchDevButt"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="28dp"
+         android:onClick="searchDevClick"
+         android:text="Get Device" />
+
+     <Button
+         android:id="@+id/sendControl"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/listView1"
+         android:layout_toRightOf="@+id/SrchDevButt"
+         android:onClick="getControlDev"
+         android:text="Connect" />
+
+     <Button
+         android:id="@+id/refrshButt"
+         style="?android:attr/buttonStyleSmall"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/listView1"
+         android:layout_alignParentRight="true"
+         android:layout_toRightOf="@+id/sendControl"
+         android:onClick="ReconnectClick"
+         android:text="Reconnect" />
+
+     <Button
+         android:id="@+id/btnLeft"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/btnDown"
+         android:layout_alignBottom="@+id/btnDown"
+         android:layout_alignRight="@+id/listView1"
+         android:onClick="CtrlLeft"
+         android:text="Left" />
+
+     <Button
+         android:id="@+id/btnDown"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/btnStop"
+         android:layout_alignLeft="@+id/btnUP"
+         android:layout_marginBottom="20dp"
+         android:onClick="CtrlDown"
+         android:text="Down" />
+
+     <Button
+         android:id="@+id/btnStop"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         android:onClick="CtrlStop"
+         android:text="Stop" />
+
+     <SeekBar
+         android:id="@+id/seekBar2"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/btnUP"
+         android:layout_alignParentLeft="true" />
+
+     <SeekBar
+         android:id="@+id/seekBar1"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/textView1"
+         android:layout_alignLeft="@+id/listView1"
+         android:layout_marginBottom="18dp" />
+
+     <TextView
+         android:id="@+id/textView2"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/seekBar1"
+         android:layout_alignRight="@+id/textView1"
+         android:text="Foward Speed: (0- 100)"
+         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+     <TextView
+         android:id="@+id/textView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/seekBar2"
+         android:layout_alignRight="@+id/btnRight"
+         android:text="Rotate speed: (0-100)"
+         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>
