@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.bluetooth.*;
 import android.content.Intent;
@@ -26,7 +29,9 @@ public class MainActivity extends Activity {
 	private Set<BluetoothDevice> pairedDevices;
 	private ListView lv;
 	private OutputStream outStream = null;
-	
+	private TextView fwdTextV, rotTextV; 
+	private SeekBar fwdBar, rotBar;
+	private char fwdSpeed, rotSpeed;
 	// SPP UUID service
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	// MAC address of FireFly
@@ -38,31 +43,22 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rootlayout);
 		lv = (ListView)findViewById(R.id.listView1);
-//		rootView = (ViewGroup) findViewById(R.id.rootLayout);
-//		sceneConnecttoPC = Scene.getSceneForLayout(rootView ,R.layout.connectpc, this);
+//		fwdTextV = (TextView)findViewById(R.id.FwdProgr);
+//		rotTextV = (TextView)findViewById(R.id.RotProgr);
+		
+		
+
+		
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(!btAdapter.isEnabled()){
 			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(turnOn, 0);
 		}
-//		if (!btAdapter.isEnabled()) {
-//	         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//	         startActivityForResult(turnOn, 0);
-//	         Toast.makeText(getApplicationContext(),"Turned on" 
-//	         ,Toast.LENGTH_LONG).show();
-//	      }
-//	      else{
-//	         Toast.makeText(getApplicationContext(),"Bluetooth on",
-//	         Toast.LENGTH_LONG).show();
-//	         }
-		
-		
-	    
 		
 
 		Log.e(TAG, "+++DONE CREATE +++");
 	}
-
+	 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -77,6 +73,7 @@ public class MainActivity extends Activity {
         Log.d(TAG, "+ ON RESUME +");
         
 	}
+	
     public void setupbluetoothConnect() {
     	BluetoothDevice device = btAdapter.getRemoteDevice(address);
         try {
@@ -149,6 +146,7 @@ public class MainActivity extends Activity {
 	}
 	public void drive(char velocity, char rotatespeed) {
 		sendCommandtoiRobot((char)137);
+		velocity = (char) (velocity * 5);
 		sendCommandtoiRobot(toHighBytes(velocity));
 		sendCommandtoiRobot(toLowBytes(velocity));
 		sendCommandtoiRobot(toHighBytes(rotatespeed));
@@ -212,31 +210,31 @@ public class MainActivity extends Activity {
 	}
 	public void CtrlRight(View v) throws IOException
 	{	
-		drive((char) 90,(char) -1);
+		drive(rotSpeed,(char) -1);
 		Toast.makeText(getApplicationContext(),"CtrlRight",
 		         Toast.LENGTH_SHORT).show();
 	}
 	public void CtrlUP(View v) throws IOException
 	{	
-		drive((char) 200,(char) 32767);
+		drive(fwdSpeed,(char) 32768);
 		Toast.makeText(getApplicationContext(),"CtrlUP",
 		         Toast.LENGTH_SHORT).show();
 	}
 	public void CtrlLeft(View v) throws IOException
 	{	
-		drive((char) 90,(char) 1);
+		drive(rotSpeed,(char) 1);
 		Toast.makeText(getApplicationContext(),"CtrlLeft",
 		         Toast.LENGTH_SHORT).show();
 	}
 	public void CtrlDown(View v) throws IOException
 	{	
-		drive((char) -90,(char) 32767);
+		drive((char)-fwdSpeed,(char) 32768);
 		Toast.makeText(getApplicationContext(),"CtrlDown",
 		         Toast.LENGTH_SHORT).show();
 	}
 	
 	public void ReconnectClick(View v) throws IOException {
-		onResume();
+		setupbluetoothConnect();
 		sendCommandtoiRobot((char)128);
 		sendCommandtoiRobot((char)132);
 	}
@@ -251,6 +249,62 @@ public class MainActivity extends Activity {
 		pairedDevices = btAdapter.getBondedDevices();
 		setupbluetoothConnect();
 		Log.e(TAG, "+++DONE getBT for robot");
+		setupSeekBar();
+	}
+	private void setupSeekBar() {
+		fwdTextV = (TextView)findViewById(R.id.FwdProgr);
+		rotTextV = (TextView)findViewById(R.id.RotProgr);
+		fwdBar = (SeekBar)findViewById(R.id.fwdBar);
+		rotBar = (SeekBar)findViewById(R.id.rotBar);
+		
+		fwdBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				fwdTextV.setText(" "+progress);
+				fwdSpeed = (char)progress;
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		
+		});
+		rotBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				rotTextV.setText(" "+progress);
+				rotSpeed = (char) progress;
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		
+		});
 	}
 	public void CtrlConnectPC(View v)
 	{	

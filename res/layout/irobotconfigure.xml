@@ -98,14 +98,14 @@
          android:text="Stop" />
 
      <SeekBar
-         android:id="@+id/seekBar2"
+         android:id="@+id/rotBar"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_above="@+id/btnUP"
          android:layout_alignParentLeft="true" />
 
      <SeekBar
-         android:id="@+id/seekBar1"
+         android:id="@+id/fwdBar"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_above="@+id/textView1"
@@ -116,18 +116,36 @@
          android:id="@+id/textView2"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_above="@+id/seekBar1"
-         android:layout_alignRight="@+id/textView1"
-         android:text="Foward Speed: (0- 100)"
+         android:layout_above="@+id/fwdBar"
+         android:layout_alignRight="@+id/btnUP"
+         android:text="Foward Speed: "
          android:textAppearance="?android:attr/textAppearanceLarge" />
 
      <TextView
          android:id="@+id/textView1"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_above="@+id/seekBar2"
-         android:layout_alignRight="@+id/btnRight"
-         android:text="Rotate speed: (0-100)"
+         android:layout_above="@+id/rotBar"
+         android:layout_alignLeft="@+id/textView2"
+         android:text="Rotate speed: "
+         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+     <TextView
+         android:id="@+id/FwdProgr"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/fwdBar"
+         android:layout_alignRight="@+id/fwdBar"
+         android:text="0"
+         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+     <TextView
+         android:id="@+id/RotProgr"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/rotBar"
+         android:layout_alignRight="@+id/rotBar"
+         android:text="0"
          android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
